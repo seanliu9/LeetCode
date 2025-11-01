@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LC140_Word_Break_II")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bdf7e4b8bf1d75c51fa4e83b6b4cad1fbd488574")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec6ba64b887787e052c5cfba5412dd345b844cf7")]
 [assembly: System.Reflection.AssemblyProductAttribute("LC140_Word_Break_II")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LC140_Word_Break_II")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
