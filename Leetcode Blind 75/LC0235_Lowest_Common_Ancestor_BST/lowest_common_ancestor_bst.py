@@ -18,7 +18,7 @@ class Solution:
                 # Go left if both p and q are smaller than lca
                 lca = lca.left
             else: 
-                # if one of p and q is greater than root but the other is smaller than root
+                # if one of p and q is greater than lca but the other is smaller than lca
                 # OR if one of p and q equals lca
                 return lca
         return lca
