@@ -26,7 +26,6 @@ class Solution:
             return root.val
 
         values = []
-        print(f"root.val = {root.val}")
 
         self.LVR(node=root, values=values)
         # After LVR traversal, all the nodes' values are in ascending order.
