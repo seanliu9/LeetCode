@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LC10_RegExMatching")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec6ba64b887787e052c5cfba5412dd345b844cf7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+858a17b40037aeefdc15c38f6251f71c955761ef")]
 [assembly: System.Reflection.AssemblyProductAttribute("LC10_RegExMatching")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LC10_RegExMatching")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
