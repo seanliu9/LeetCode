@@ -29,7 +29,7 @@ class Solution:
             count += (right_ptr - (mid + 1))
             left_ptr += 1
 
-        # Now merge the two sorted subarrays
+        # Now merge the two subarrays
         sorted = []
         left_ptr = left
         right_ptr = mid + 1
