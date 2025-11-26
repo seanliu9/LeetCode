@@ -77,35 +77,46 @@ class Graph:
             for incoming_vtx in curr_vtx.incoming:
                 print(f"{incoming_vtx.val}")
 
-    # Run BFS from start_vtx, and find the greatest path length from it.
-    def bfs(self, start_vtx: Vertex):
+    def dfs(self, start_vtx: Vertex, memo: dict):
+        if start_vtx in memo.keys():
+            return memo[start_vtx]
+        
         if len(start_vtx.outgoing) == 0:
+            memo[start_vtx] = 1
             return 1
-        queue = deque()
-        distances = {start_vtx: 0}
-        queue.append(start_vtx)
-        #furthest_vtx = start_vtx
+        
         max_dist = 0
-        while len(queue) > 0:
-            curr_vtx = queue.popleft()
-            # Examine all the outgoing vertices of curr_vtx
-            for nbr in curr_vtx.outgoing:
-                queue.append(nbr)
-                distances[nbr] = distances[curr_vtx] + 1
-                # Also keep track of the furthest vertex from start_vtx
-                max_dist = max(max_dist, distances[nbr])
-        return max_dist + 1
+        for nbr in start_vtx.outgoing:
+            max_dist = max(max_dist, self.dfs(nbr, memo))
+        memo[start_vtx] = max_dist + 1
+        return memo[start_vtx]
+
+        # queue = deque()
+        # distances = {start_vtx: 0}
+        # queue.append(start_vtx)
+        # #furthest_vtx = start_vtx
+        # max_dist = 0
+        # while len(queue) > 0:
+        #     curr_vtx = queue.popleft()
+        #     # Examine all the outgoing vertices of curr_vtx
+        #     for nbr in curr_vtx.outgoing:
+        #         queue.append(nbr)
+        #         distances[nbr] = distances[curr_vtx] + 1
+        #         # Also keep track of the furthest vertex from start_vtx
+        #         max_dist = max(max_dist, distances[nbr])
+        # return max_dist + 1
 
 
     def longest_increasing_path(self):
         # Consider each vertex as a starting vertex for BFS.
-        max_path_length = 1
+        max_path_length = 0
+        memo = {}
         for vtx in self.vertices.values():
             # u, _ = self.bfs(vtx)
             # _, max_dist = self.bfs(u)
             # Only consider vertices with no incoming edges
             if len(vtx.incoming) == 0:
-                max_dist = self.bfs(vtx)
+                max_dist = self.dfs(vtx, memo)
                 max_path_length = max(max_path_length, max_dist)
         return max_path_length
 
@@ -133,57 +144,10 @@ class Graph:
         return dist, min(lowest_cost, 0)
 
 class Solution:
-    # Run BFS from (start_x, start_y), and find the greatest path length from it.
-    def bfs(self, matrix: List[List[int]], start_x: int, start_y: int, m: int, n: int):
-        visited = [[False] * n for _ in range(m)]
-        queue = deque()
-        distances = [[0] * n for _ in range(m)]
-        distances[start_x][start_y] = 0
-        queue.append((start_x, start_y))
-        max_dist = 0
-        while len(queue) > 0:
-            curr_x, curr_y = queue.popleft()
-            visited[curr_x][curr_y] = True
-            new_dist = distances[curr_x][curr_y] + 1
-            # Consider all 4 of curr_vtx's valid neighbors (left, up, right, down)
-            # left neighbor
-            if curr_y - 1 >= 0 and matrix[curr_x][curr_y - 1] > matrix[curr_x][curr_y]:
-                if not visited[curr_x][curr_y - 1]:
-                    queue.append((curr_x, curr_y - 1))
-                    distances[curr_x][curr_y - 1] = new_dist
-                    max_dist = max(max_dist, new_dist)
-            # top neighbor
-            if curr_x - 1 >= 0 and matrix[curr_x - 1][curr_y] > matrix[curr_x][curr_y]:
-                if not visited[curr_x - 1][curr_y]:
-                    queue.append((curr_x - 1, curr_y))
-                    distances[curr_x - 1][curr_y] = new_dist
-                    max_dist = max(max_dist, new_dist)
-            # right neighbor
-            if curr_y + 1 < n and matrix[curr_x][curr_y + 1] > matrix[curr_x][curr_y]:
-                if not visited[curr_x][curr_y + 1]:
-                    queue.append((curr_x, curr_y + 1))
-                    distances[curr_x][curr_y + 1] = new_dist
-                    max_dist = max(max_dist, new_dist)
-            # bottom neighbor
-            if curr_x + 1 < m and matrix[curr_x + 1][curr_y] > matrix[curr_x][curr_y]:
-                if not visited[curr_x + 1][curr_y]:
-                    queue.append((curr_x + 1, curr_y))
-                    distances[curr_x + 1][curr_y] = new_dist
-                    max_dist = max(max_dist, new_dist)
-
-        return max_dist + 1
-
     def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
         # trivial case
         if len(matrix) == 1 and len(matrix[0]) == 1:
             return 1
 
-        # m = len(matrix) # number of rows
-        # n = len(matrix[0]) # number of columns
-        # LIP_length = -1
-        # for i in range(m):
-        #     for j in range(n):
-        #         LIP_length = max(LIP_length, self.bfs(matrix, i, j, m, n))
-        # return LIP_length
         graph = Graph(matrix)
         return graph.longest_increasing_path()
