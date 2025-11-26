@@ -10,27 +10,28 @@ class Solution:
         max_dist = 0
         while len(queue) > 0:
             curr_x, curr_y = queue.popleft()
+            new_dist = distances[(curr_x, curr_y)] + 1
             # Consider all 4 of curr_vtx's valid neighbors (left, up, right, down)
             # left neighbor
             if curr_y - 1 >= 0 and matrix[curr_x][curr_y - 1] > matrix[curr_x][curr_y]:
                 queue.append((curr_x, curr_y - 1))
-                distances[(curr_x, curr_y - 1)] = distances[(curr_x, curr_y)] + 1
-                max_dist = max(max_dist, distances[(curr_x, curr_y - 1)])
+                distances[(curr_x, curr_y - 1)] = new_dist
+                max_dist = max(max_dist, new_dist)
             # top neighbor
             if curr_x - 1 >= 0 and matrix[curr_x - 1][curr_y] > matrix[curr_x][curr_y]:
                 queue.append((curr_x - 1, curr_y))
-                distances[(curr_x - 1, curr_y)] = distances[(curr_x, curr_y)] + 1
-                max_dist = max(max_dist, distances[(curr_x - 1, curr_y)])
+                distances[(curr_x - 1, curr_y)] = new_dist
+                max_dist = max(max_dist, new_dist)
             # right neighbor
             if curr_y + 1 < n and matrix[curr_x][curr_y + 1] > matrix[curr_x][curr_y]:
                 queue.append((curr_x, curr_y + 1))
-                distances[(curr_x, curr_y + 1)] = distances[(curr_x, curr_y)] + 1
-                max_dist = max(max_dist, distances[(curr_x, curr_y + 1)])
+                distances[(curr_x, curr_y + 1)] = new_dist
+                max_dist = max(max_dist, new_dist)
             # bottom neighbor
             if curr_x + 1 < m and matrix[curr_x + 1][curr_y] > matrix[curr_x][curr_y]:
                 queue.append((curr_x + 1, curr_y))
-                distances[(curr_x + 1, curr_y)] = distances[(curr_x, curr_y)] + 1
-                max_dist = max(max_dist, distances[(curr_x + 1, curr_y)])
+                distances[(curr_x + 1, curr_y)] = new_dist
+                max_dist = max(max_dist, new_dist)
 
         return max_dist + 1
 
