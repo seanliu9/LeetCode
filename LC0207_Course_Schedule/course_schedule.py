@@ -3,7 +3,7 @@ from typing import List
 
 class Solution:
     # ordering is a dictionary that maps a vertex to its [preorder, postorder]
-    def topo_sort(self, start_vtx: int, adj: dict, ordering: dict, clock: int, topo_order: deque) -> int:
+    def topo_sort(self, start_vtx: int, adj: dict, ordering: dict, clock: int) -> int:
         if ordering[start_vtx][0] != 0:
             return -1
 
@@ -14,13 +14,12 @@ class Solution:
         # Perform DFS on all the outgoing vertices of start_vtx.
         for nbr in adj[start_vtx]:
             if ordering[nbr][1] == 0:
-                clock = self.topo_sort(nbr, adj, ordering, clock, topo_order)
+                clock = self.topo_sort(nbr, adj, ordering, clock)
                 if clock == -1:
                     return -1
 
         ordering[start_vtx][1] = clock
         clock += 1
-        topo_order.append(start_vtx)
         return clock
 
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
@@ -35,10 +34,9 @@ class Solution:
         # Perform a topological sort of the graph
         ordering = {course: [0, 0] for course in range(numCourses)}
         clock = 1
-        topo_order = deque()
         for i in range(numCourses):
             if ordering[i][0] == 0: # if course i hasn't been visited yet
-                clock = self.topo_sort(i, adj, ordering, clock, topo_order)
+                clock = self.topo_sort(i, adj, ordering, clock)
                 if clock == -1:
                     return False
 
