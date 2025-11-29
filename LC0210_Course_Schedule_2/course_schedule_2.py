@@ -1,28 +1,30 @@
 from collections import deque
 from typing import List
+
 class Solution:
-    # ordering is a dictionary that maps a vertex to its [preorder, postorder]
-    def topo_sort(self, start_vtx: int, adj: dict, ordering: dict, clock: int, topo_order: deque) -> int:
-        if ordering[start_vtx][0] != 0:
-            return -1
+    def __init__(self):
+        self.clock = 1
+        self.ordering = {} # maps node to its [preorder, postorder]
+        self.topo_order = deque()
+
+    def topo_sort(self, start_vtx: str, adj: dict):
+        # if start_vtx has already been visited
+        if self.ordering[start_vtx][0] != 0:
+            return
 
         # Set preorder of start_vtx
-        ordering[start_vtx][0] = clock
-        clock += 1
+        self.ordering[start_vtx][0] = self.clock
+        self.clock += 1
 
         # Perform DFS on all the outgoing vertices of start_vtx.
         for nbr in adj[start_vtx]:
-            if ordering[nbr][1] == 0:
-                clock = self.topo_sort(nbr, adj, ordering, clock, topo_order)
-                if clock == -1:
-                    return -1
+            if self.ordering[nbr][1] == 0: # if the vertex hasn't been fully processed yet
+                self.topo_sort(nbr, adj)
 
-        ordering[start_vtx][1] = clock
-        clock += 1
-        topo_order.append(start_vtx)
-        return clock
+        self.ordering[start_vtx][1] = self.clock
+        self.clock += 1
+        self.topo_order.append(start_vtx)
 
-    
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         # Construct a graph from prerequisites. An edge from u to v means u is a prereq for v.
         adj = {course: [] for course in range(numCourses)} # maps course number to the courses that it's a prereq for
@@ -33,16 +35,19 @@ class Solution:
             adj[b].append(a)
         
         # Perform a topological sort of the graph
-        topo_order = deque()
-        ordering = {course: [0, 0] for course in range(numCourses)}
-        clock = 1
+        self.ordering = {course: [0, 0] for course in range(numCourses)}
         for i in range(numCourses):
-            if ordering[i][0] == 0: # if course i hasn't been visited yet
-                clock = self.topo_sort(i, adj, ordering, clock, topo_order)
-                if clock == -1: # if it's not possible to finish all the courses
-                    return []
+            if self.ordering[i][0] == 0: # if course i hasn't been visited yet
+                self.topo_sort(i, adj)
 
-        answer = []
-        while topo_order:
-            answer.append(topo_order.pop())
+        # For each prereq, determine what type of edge it is. If it's a back edge, then we cannot finish all the courses.
+        for u, v in prerequisites: # The policy says that v is a prereq of u.
+            u_pre = self.ordering[u][0]
+            u_post = self.ordering[u][1]
+            v_pre = self.ordering[v][0]
+            v_post = self.ordering[v][1]
+            if u_pre < v_pre and u_post > v_post: # back edge detected
+                return []
+
+        answer = list(self.topo_order)[::-1]
         return answer
