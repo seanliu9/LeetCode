@@ -1,21 +1,28 @@
+from collections import deque
+
 class Solution:
-    def topo_sort(self, start_vtx: int, adj: dict, ordering: dict, clock: int) -> int:
-        if ordering[start_vtx][0] != 0:
-            return clock
+    def __init__(self):
+        self.clock = 1
+        self.ordering = {} # maps node to its [preorder, postorder]
+        self.topo_order = deque()
+
+    def topo_sort(self, start_vtx: str, adj: dict):
+        # if start_vtx has already been visited
+        if self.ordering[start_vtx][0] != 0:
+            return
 
         # Set preorder of start_vtx
-        ordering[start_vtx][0] = clock
-        clock += 1
+        self.ordering[start_vtx][0] = self.clock
+        self.clock += 1
 
-        # Perform DFS on all outgoing vertices of start_vtx.
+        # Perform DFS on all the outgoing vertices of start_vtx.
         for nbr in adj[start_vtx]:
-            clock = self.topo_sort(nbr, adj, ordering, clock)
+            if self.ordering[nbr][1] == 0: # if the vertex hasn't been fully processed yet
+                self.topo_sort(nbr, adj)
 
-        # Set postorder of start_vtx
-        ordering[start_vtx][1] = clock
-        clock += 1
-        
-        return clock
+        self.ordering[start_vtx][1] = self.clock
+        self.clock += 1
+        self.topo_order.append(start_vtx)
 
     def dfs(self, adj: dict, start_vtx: int, end_vtx: int, visited: set) -> bool:
         # Perform DFS from start_vtx to try to reach end_vtx
@@ -35,18 +42,17 @@ class Solution:
             a, b = prereq[0], prereq[1] # a is a prereq of b
             adj[a].append(b)
 
-        ordering = {i: [0, 0] for i in range(numCourses)}
-        clock = 1
+        self.ordering = {i: [0, 0] for i in range(numCourses)}
         for i in range(numCourses):
-            if ordering[i][0] == 0:  # if course i hasn't been visited yet
-                clock = self.topo_sort(i, adj, ordering, clock)
+            if self.ordering[i][0] == 0:  # if course i hasn't been visited yet
+                self.topo_sort(i, adj)
 
         answer = []
         for u, v in queries:
-            if ordering[u][0] < ordering[v][0] and ordering[u][1] > ordering[v][1]:
+            if self.ordering[u][0] < self.ordering[v][0] and self.ordering[u][1] > self.ordering[v][1]:
                 # (u, v) is a forward edge
                 answer.append(True)
-            elif ordering[v][0] < ordering[u][0] and ordering[v][1] > ordering[u][1]:
+            elif self.ordering[v][0] < self.ordering[u][0] and self.ordering[v][1] > self.ordering[u][1]:
                 # (u, v) is a back edge
                 answer.append(False)
             else:
