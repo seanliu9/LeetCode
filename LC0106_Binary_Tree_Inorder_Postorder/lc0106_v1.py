@@ -1,4 +1,6 @@
-from typing import List, Optional 
+# Note: This solution does not use global variables for inorder and postorder, but instead creates a new subarray for each recursive call.
+
+from typing import List, Optional
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -6,6 +8,7 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
+
 class Solution:
     def rBuildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
         # base cases
@@ -26,7 +29,7 @@ class Solution:
             right_inorder = inorder[root_index + 1:]
             # Determine the preorder inputs to the recursive calls
             left_postorder = postorder[0: len(left_inorder)]
-            right_postorder = postorder[len(left_inorder):]
+            right_postorder = postorder[len(left_inorder): -1]
             # Create left and right subtrees
             result.left = self.rBuildTree(left_inorder, left_postorder)
             result.right = self.rBuildTree(right_inorder, right_postorder)
@@ -34,9 +37,3 @@ class Solution:
 
     def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
         return self.rBuildTree(inorder, postorder)
-    
-if __name__ == "__main__":
-    sol = Solution()
-    inorder = [9,3,15,20,7]
-    postorder = [9,15,7,20,3]
-    sol.buildTree(inorder, postorder)
