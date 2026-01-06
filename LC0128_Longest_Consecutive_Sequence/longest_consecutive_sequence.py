@@ -8,18 +8,21 @@ class Solution:
         elif len(nums) == 1:
             return 1
 
-        nums_set = set(nums)
         max_length = 1
+        nums = list(set(nums)) # Delete repeated numbers
+        ranges = {num: [num, num] for num in nums} # maps number to the min and max of its longest consecutive elements sequence
+        #print(ranges)
+        for num in nums:
+            # Check 1 below
+            if num - 1 in ranges:
+                ranges[num][0] = min(ranges[num][0], ranges[num - 1][0])
+                ranges[ranges[num - 1][0]] = ranges[num]
 
-        for num in nums_set:
-            if num - 1 not in nums_set:
-                current = num
-                length = 1
+            # Check 1 above
+            if num + 1 in ranges:
+                ranges[num][1] = max(ranges[num][1], ranges[num + 1][1])
+                ranges[ranges[num + 1][1]] = ranges[num]
 
-                while current + 1 in nums_set:
-                    current += 1
-                    length += 1
-
-                max_length = max(max_length, length)
-        
+            max_length = max(max_length, ranges[num][1] - ranges[num][0] + 1)
+        #print(ranges)
         return max_length
