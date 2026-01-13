@@ -24,6 +24,6 @@ class Solution:
         if not root:
             return 0
             
-        # We must consider both when (A) the path starts at root and (B) the path does not start at root.
+        # We must consider both when (A) the path contains root and (B) the path does not contain root.
         return self.rPathSum(root, targetSum) + self.pathSum(root.left, targetSum) + self.pathSum(root.right, targetSum)
         
