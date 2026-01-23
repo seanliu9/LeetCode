@@ -33,8 +33,6 @@ class Solution:
                 return self.rTrimBST(root.right, low, high)
             elif root.val > high:
                 return self.rTrimBST(root.left, low, high)
-            else:
-                return None
 
     def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
         return self.rTrimBST(root, low, high)

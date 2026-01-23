@@ -1,4 +1,3 @@
-import java.lang.Math;
 class Solution {
     public int findLengthOfLCIS(int[] nums) {
         int max_length = 1;
