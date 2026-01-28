@@ -63,19 +63,24 @@ public:
 
 int main()
 {
-    // ListNode* head = new ListNode(5);
-    // head->next = new ListNode(2);
-    // head->next->next = new ListNode(13);
-    // head->next->next->next = new ListNode(3);
-    // head->next->next->next->next = new ListNode(8);
+    ListNode* head = new ListNode(5);
+    head->next = new ListNode(2);
+    head->next->next = new ListNode(13);
+    head->next->next->next = new ListNode(3);
+    head->next->next->next->next = new ListNode(8);
 
     
-    ListNode* head = new ListNode(3);
-    head->next = new ListNode(4);
-    head->next = new ListNode(6);
-    head->next = new ListNode(150);
+    // ListNode* head = new ListNode(3);
+    // head->next = new ListNode(4);
+    // head->next->next = new ListNode(6);
+    // head->next->next->next = new ListNode(150);
 
     Solution sol;
     ListNode* answer = sol.removeNodes(head);
-    std::cout << "final list's head = " << answer->val;
+    ListNode* curr = answer;
+    while (curr != nullptr)
+    {
+        cout << curr->val << "->";
+        curr = curr->next;
+    }
 }
