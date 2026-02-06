@@ -9,7 +9,7 @@ struct TreeNode {
 
 class Solution {
 public:
-    TreeNode* rMergeTrees(const TreeNode* root1, const TreeNode* root2)
+    TreeNode* rMergeTrees(const TreeNode* const root1, const TreeNode* const root2) const
     {
         if (root1 == nullptr && root2 == nullptr)
         {
