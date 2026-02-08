@@ -1,41 +1,36 @@
 #include <stack>
-#include <unordered_map>
-
 using namespace std;
 
 class MinStack {
 private:
-    stack<int> stk;
-    unordered_map<int, int> min_at_level;
-    int curr_level;
+    stack<int> reg_stk;
+    stack<int> min_stk;
 public:
     MinStack() {
-        this->curr_level = -1;
     }
     
     void push(int val) {
-        stk.push(val);
-        this->curr_level += 1;
-        if (this->curr_level == 0)
+        this->reg_stk.push(val);
+        if (this->min_stk.empty())
         {
-            this->min_at_level[curr_level] = val;
+            this->min_stk.push(val);
         }
         else
         {
-            this->min_at_level[curr_level] = min(val, this->min_at_level[curr_level - 1]);
+            this->min_stk.push(min(val, this->min_stk.top()));
         }
     }
     
     void pop() {
-        stk.pop();
-        this->curr_level -= 1;
+        this->reg_stk.pop();
+        this->min_stk.pop();
     }
     
     int top() {
-        return stk.top();
+        return this->reg_stk.top();
     }
     
     int getMin() {
-        return this->min_at_level[this->curr_level];
+        return this->min_stk.top();
     }
 };
