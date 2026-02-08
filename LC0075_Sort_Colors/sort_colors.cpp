@@ -3,39 +3,49 @@ using namespace std;
 
 class Solution {
 public:
-    void sortColors(vector<int>& nums) {
+    // Move all the elements with value target_val together.
+    void sort_by_value(const int target_val, vector<int>& nums, size_t& start_idx) {
         size_t n = nums.size();
-        size_t count_0 = 0;
-        size_t count_1 = 0;
-        size_t count_2 = 0;
-        for (size_t i = 0; i < n; i++)
-        {
-            if (nums[i] == 0)
-            {
-                count_0++;
-            }
-            else if (nums[i] == 1)
-            {
-                count_1++;
-            }
-            else
-            {
-                count_2++;
-            }
-        }
 
-        for (size_t i = 0; i < count_0; i++)
-        {
-            nums[i] = 0;
+        // Start searching for target_val from the current start_idx
+        size_t target_val_idx = start_idx;
+
+        while (target_val_idx < n && start_idx < n) {
+            if (nums[start_idx] == target_val) 
+            {
+                start_idx++;
+                if (target_val_idx < start_idx)
+                {
+                    target_val_idx = start_idx;
+                } 
+            } 
+            else {
+                // Find the next index in nums that has target_val, and swap it with nums[start_idx].
+                if (target_val_idx <= start_idx) 
+                {
+                    target_val_idx = start_idx + 1;
+                }
+                while (target_val_idx < n && nums[target_val_idx] != target_val) 
+                {
+                    target_val_idx++;
+                }
+
+                if (target_val_idx < n) {
+                    std::swap(nums[start_idx], nums[target_val_idx]);
+                    start_idx++;
+                    target_val_idx++;
+                }
+                else 
+                {
+                    break; 
+                }
+            }
         }
-        size_t right_1_boundary = count_0 + count_1;
-        for (size_t i = count_0; i < right_1_boundary; i++)
-        {
-            nums[i] = 1;
-        }
-        for (size_t i = right_1_boundary; i < n; i++)
-        {
-            nums[i] = 2;
-        }
+    }
+
+    void sortColors(vector<int>& nums) {
+        size_t i = 0; // i is the current index in nums we are examining
+        this->sort_by_value(0, nums, i);
+        this->sort_by_value(1, nums, i);
     }
 };
