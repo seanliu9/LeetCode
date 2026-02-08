@@ -4,7 +4,7 @@ using namespace std;
 class Solution {
 public:
     // Move all the elements with value target_val together.
-    void sort_by_value(const int target_val, vector<int>& nums, size_t& start_idx) {
+    void sort_by_value(const int target_val, vector<int>& nums, size_t& start_idx) const {
         size_t n = nums.size();
 
         // Start searching for target_val from the current start_idx
